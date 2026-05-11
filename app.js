@@ -53,22 +53,32 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // POST Route (Moved outside of the GET route)
-app.post('/req', async (req, res) => {
-    const { name } = req.body;
-    if (!name || name.trim() === '') {
+app.get('/insertOne', async (req, res) => {
 
-        return res.status(400).send('Please Enter Valid name')
-    }
+    const { name, weplayid } = req.query;
+if (
+  !name ||
+  name.trim() === '' ||
+  typeof weplayid !== 'string' ||
+  weplayid.toString().length !== 10
+) {
+  return res.status(400).json({
+    success: false,
+    message: 'Weplay ID must be exactly 10 digits , name also need'
+  });
+}
 
     try {
 
         const collection = await db.collection('list')
 
-        await collection.insertOne({ name: name })
+        await collection.insertOne({ name: name , weplayid:weplayid})
 
         res.status(200).send('thanks for submit');
 
     }
+
+
 
     catch (err) {
         if (err.code === 11000) {
