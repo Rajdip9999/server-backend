@@ -94,46 +94,41 @@ app.get('/insertOne', async (req, res) => {
 
 // GET Route
 app.get('/', async (req, res) => {
-    const {name,wpid } = req.query; // Note: 'adress' matches your query param
-
-    // console.log(weplayid)
+    const { wpid } = req.query; // Note: 'adress' matches your query param
     const id = Number(wpid)
-// const weplayidtonum = Number.weplayid
-
     const list = await db.collection('list')
 
-    const friends = await list.find({weplayid:id}).toArray()
+    const friends = await list.find({ weplayid: id }).toArray()
 
     if (friends.length > 0) {
 
         const friend = friends[0]
 
-return res.json({
-name: friend.name,
-        gender: friend.gender,
-        weplayid: friend.weplayid,
-        country: friend.country,
-        level: friend.level,
-        charm: friend.charm,
-        diamondLevel: friend.diamondLevel,
-        isDiamond: friend.isDiamond,
-        family: friend.family,
-        familyRole: friend.familyRole,
-        moments: friend.moments,
-        gift: friend.gift,
-        star: friend.star,
-        bff: friend.bff,
-        signature: friend.signature,
-        voiceRoom: friend.voiceRoom,
-        date: friend.date,
-        time: friend.time
-});
+        return res.json({
+            name: friend.name,
+            gender: friend.gender,
+            weplayid: friend.weplayid,
+            country: friend.country,
+            level: friend.level,
+            charm: friend.charm,
+            diamondLevel: friend.diamondLevel,
+            isDiamond: friend.isDiamond,
+            family: friend.family,
+            familyRole: friend.familyRole,
+            moments: friend.moments,
+            gift: friend.gift,
+            star: friend.star,
+            bff: friend.bff,
+            signature: friend.signature,
+            voiceRoom: friend.voiceRoom,
+            date: friend.date,
+            time: friend.time
+        });
 
 
-    } else if (adress) {
-        res.send(`This is adress ${adress}`);
-    } else {
-        res.status(200).send('enter Weplay ID');
-    
+    }
+    else {
+        res.status(400).send('enter Weplay ID');
+
     }
 });
