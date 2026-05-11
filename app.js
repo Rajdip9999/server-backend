@@ -102,9 +102,11 @@ app.get('/', async (req, res) => {
         const friend = friends[0]
 
         return res.json({
+            name:friend.name,
             age: friend.age,
             iselegible: friend.iselegible,
-            weplayId: friend.weplayid
+            weplayId: friend.weplayid,
+            isDiamond: friend.isDiamond
         })
 
 
