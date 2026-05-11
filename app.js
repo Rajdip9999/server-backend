@@ -28,8 +28,13 @@ const ConnectDB = async () => {
         const lists = await db.collection('list')
 
         await lists.createIndex(
-            { name: 1 },
-            { unique: true, partialFilterExpression: { name: { $exists: true } } }
+            { weplayid: 1 },
+            {
+                unique: true,
+                partialFilterExpression: {
+                    weplayid: { $exists: true }
+                }
+            }
         );
 
         app.listen(port, () => {
@@ -56,23 +61,23 @@ app.use(express.json());
 app.get('/insertOne', async (req, res) => {
 
     const { name, weplayid } = req.query;
-if (
-  !name ||
-  name.trim() === '' ||
-  typeof weplayid !== 'string' ||
-  weplayid.toString().length !== 10
-) {
-  return res.status(400).json({
-    success: false,
-    message: 'Weplay ID must be exactly 10 digits , name also need'
-  });
-}
+    if (
+        !name ||
+        name.trim() === '' ||
+        typeof weplayid !== 'string' ||
+        weplayid.toString().length !== 10
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: 'Weplay ID must be exactly 10 digits , name also need'
+        });
+    }
 
     try {
 
         const collection = await db.collection('list')
 
-        await collection.insertOne({ name: name , weplayid:weplayid})
+        await collection.insertOne({ name: name, weplayid: weplayid })
 
         res.status(200).send('thanks for submit');
 
@@ -89,30 +94,46 @@ if (
 
 // GET Route
 app.get('/', async (req, res) => {
-    const { name, adress } = req.query; // Note: 'adress' matches your query param
+    const {name,wpid } = req.query; // Note: 'adress' matches your query param
 
+    // console.log(weplayid)
+    const id = Number(wpid)
+// const weplayidtonum = Number.weplayid
 
     const list = await db.collection('list')
 
-    const friends = await list.find({ name: `${name}` }).toArray()
-
+    const friends = await list.find({weplayid:id}).toArray()
 
     if (friends.length > 0) {
 
         const friend = friends[0]
 
-        return res.json({
-            name:friend.name,
-            age: friend.age,
-            iselegible: friend.iselegible,
-            weplayId: friend.weplayid,
-            isDiamond: friend.isDiamond
-        })
+return res.json({
+name: friend.name,
+        gender: friend.gender,
+        weplayid: friend.weplayid,
+        country: friend.country,
+        level: friend.level,
+        charm: friend.charm,
+        diamondLevel: friend.diamondLevel,
+        isDiamond: friend.isDiamond,
+        family: friend.family,
+        familyRole: friend.familyRole,
+        moments: friend.moments,
+        gift: friend.gift,
+        star: friend.star,
+        bff: friend.bff,
+        signature: friend.signature,
+        voiceRoom: friend.voiceRoom,
+        date: friend.date,
+        time: friend.time
+});
 
 
     } else if (adress) {
         res.send(`This is adress ${adress}`);
     } else {
-        res.status(200).send('Bye');
+        res.status(200).send('enter Weplay ID');
+    
     }
 });
