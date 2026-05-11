@@ -58,13 +58,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // POST Route (Moved outside of the GET route)
-app.get('/insertOne', async (req, res) => {
+app.post('/insertOne', async (req, res) => {
 
-    const { name, weplayid } = req.query;
+    const { name, weplayid } = req.body;
+
     if (
         !name ||
         name.trim() === '' ||
-        typeof weplayid !== 'string' ||
+        typeof weplayid !== 'number' ||
         weplayid.toString().length !== 10
     ) {
         return res.status(400).json({
@@ -80,6 +81,8 @@ app.get('/insertOne', async (req, res) => {
         await collection.insertOne({ name: name, weplayid: weplayid })
 
         res.status(200).send('thanks for submit');
+
+        
 
     }
 
@@ -124,6 +127,15 @@ app.get('/', async (req, res) => {
             date: friend.date,
             time: friend.time
         });
+
+        app.post('/insertOne',async(req,res)=>{
+            const {name,wpid} = req.body
+
+            console.log(name,wpid)
+
+            res.status(200).send('file resived')
+
+        })
 
 
     }
