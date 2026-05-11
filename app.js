@@ -12,7 +12,8 @@ app.use(cors())
 
 const url = process.env.MONGO_URL
 
-const port = process.env.PORT
+const port = process.env.PORT || 3000
+
 const clients = new MongoClient(url)
 
 let db;
