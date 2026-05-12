@@ -100,7 +100,7 @@ app.get('/', async (req, res) => {
     const { wpid } = req.query; // Note: 'adress' matches your query param
     const id = Number(wpid)
     const list = await db.collection('list')
-
+    
     const friends = await list.find({ weplayid: id }).toArray()
 
     if (friends.length > 0) {
@@ -127,16 +127,6 @@ app.get('/', async (req, res) => {
             date: friend.date,
             time: friend.time
         });
-
-        app.post('/insertOne',async(req,res)=>{
-            const {name,wpid} = req.body
-
-            console.log(name,wpid)
-
-            res.status(200).send('file resived')
-
-        })
-
 
     }
     else {
