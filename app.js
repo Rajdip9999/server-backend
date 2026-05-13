@@ -131,8 +131,4 @@ app.get('/', async (req, res) => {
         });
 
     }
-    else {
-        res.status(400).send('enter Weplay ID');
-
-    }
 });
