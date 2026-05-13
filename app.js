@@ -102,7 +102,9 @@ app.get('/', async (req, res) => {
     const list = await db.collection('list')
     
     const friends = await list.find({ weplayid: id }).toArray()
-
+    if(friends.length ===0){
+       return res.json(null)
+    }
     if (friends.length > 0) {
 
         const friend = friends[0]
