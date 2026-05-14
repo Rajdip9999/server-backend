@@ -29,6 +29,7 @@ const ConnectDB = async () => {
 
         await lists.createIndex(
             { weplayid: 1 },
+
             {
                 unique: true,
                 partialFilterExpression: {
@@ -100,15 +101,17 @@ app.get('/', async (req, res) => {
     const { wpid } = req.query; // Note: 'adress' matches your query param
     const id = Number(wpid)
     const list = await db.collection('list')
-    
+
+    const checkcol = await list.findOne({weplayid:id})
     const friends = await list.find({ weplayid: id }).toArray()
-    if(friends.length ===0){
-       return res.json(null)
-    }
+    const checkOne = checkcol?.isvisible
+    
     if (friends.length > 0) {
+
 
         const friend = friends[0]
 
+         if(checkOne){
         return res.json({
             name: friend.name,
             gender: friend.gender,
@@ -128,7 +131,14 @@ app.get('/', async (req, res) => {
             voiceRoom: friend.voiceRoom,
             date: friend.date,
             time: friend.time
-        });
+        })
+
+    }
+
+    else{
+        res.json(null)
+    }
+
 
     }
 });
