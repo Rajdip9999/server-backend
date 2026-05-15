@@ -61,7 +61,7 @@ app.use(express.json());
 // POST Route (Moved outside of the GET route)
 app.post('/insertOne', async (req, res) => {
 
-    const { name, weplayid } = req.body;
+    const { name, weplayid, gender, country, level, charm } = req.body;
 
     if (
         !name ||
@@ -79,11 +79,11 @@ app.post('/insertOne', async (req, res) => {
 
         const collection = await db.collection('list')
 
-        await collection.insertOne({ name: name, weplayid: weplayid })
+        await collection.insertOne({ name: name, weplayid: weplayid, isvisible: false })
 
         res.status(200).send('thanks for submit');
 
-        
+
 
     }
 
@@ -98,47 +98,41 @@ app.post('/insertOne', async (req, res) => {
 
 // GET Route
 app.get('/', async (req, res) => {
-    const { wpid } = req.query; // Note: 'adress' matches your query param
+
+    const { wpid } = req.query
     const id = Number(wpid)
-    const list = await db.collection('list')
 
-    const checkcol = await list.findOne({weplayid:id})
-    const friends = await list.find({ weplayid: id }).toArray()
-    const checkOne = checkcol?.isvisible
-    
-    if (friends.length > 0) {
+    const list = db.collection('list')
 
+    const friend = await list.findOne({
+        weplayid: id,
+        isvisible: true
+    })
 
-        const friend = friends[0]
-
-         if(checkOne){
-        return res.json({
-            name: friend.name,
-            gender: friend.gender,
-            weplayid: friend.weplayid,
-            country: friend.country,
-            level: friend.level,
-            charm: friend.charm,
-            diamondLevel: friend.diamondLevel,
-            isDiamond: friend.isDiamond,
-            family: friend.family,
-            familyRole: friend.familyRole,
-            moments: friend.moments,
-            gift: friend.gift,
-            star: friend.star,
-            bff: friend.bff,
-            signature: friend.signature,
-            voiceRoom: friend.voiceRoom,
-            date: friend.date,
-            time: friend.time
-        })
-
+    if (!friend) {
+        return res.json(null)
     }
 
-    else{
-        res.json(null)
-    }
+    return res.json({
+        name: friend?.name,
+        gender: friend?.gender,
+        weplayid: friend?.weplayid,
+        country: friend?.country,
+        level: friend?.level,
+        charm: friend?.charm,
+        diamondLevel: friend?.diamondLevel,
+        isDiamond: friend?.isDiamond,
+        family: friend?.family,
+        familyRole: friend?.familyRole,
+        moments: friend?.moments,
+        gift: friend?.gift,
+        star: friend?.star,
+        bff: friend?.bff,
+        signature: friend?.signature,
+        voiceRoom: friend?.voiceRoom,
+        date: friend?.date,
+        time: friend?.time
+    })
 
+})
 
-    }
-});
