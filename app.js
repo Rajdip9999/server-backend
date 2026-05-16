@@ -29,7 +29,6 @@ const ConnectDB = async () => {
 
         await lists.createIndex(
             { weplayid: 1 },
-
             {
                 unique: true,
                 partialFilterExpression: {
@@ -78,16 +77,9 @@ app.post('/insertOne', async (req, res) => {
     try {
 
         const collection = await db.collection('list')
-
         await collection.insertOne({ name: name, weplayid: weplayid, isvisible: false })
-
         res.status(200).send('thanks for submit');
-
-
-
     }
-
-
 
     catch (err) {
         if (err.code === 11000) {
@@ -109,9 +101,35 @@ app.get('/', async (req, res) => {
         isvisible: true
     })
 
+
     if (!friend) {
         return res.json(null)
     }
+
+    if(friend.weplayid ===61823962){
+     return res.status(200).json({
+    message: `Oye kemon achiis I miss u Re ${friend?.name}`,
+
+       name: friend?.name,
+        gender: friend?.gender,
+        weplayid: friend?.weplayid,
+        country: friend?.country,
+        level: friend?.level,
+        charm: friend?.charm,
+        diamondLevel: friend?.diamondLevel,
+        isDiamond: friend?.isDiamond,
+        family: friend?.family,
+        familyRole: friend?.familyRole,
+        moments: friend?.moments,
+        gift: friend?.gift,
+        star: friend?.star,
+        bff: friend?.bff,
+        signature: friend?.signature,
+        voiceRoom: friend?.voiceRoom,
+        date: friend?.date,
+        time: friend?.time
+     
+})}
 
     return res.json({
         name: friend?.name,
