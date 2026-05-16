@@ -127,7 +127,8 @@ app.get('/', async (req, res) => {
         signature: friend?.signature,
         voiceRoom: friend?.voiceRoom,
         date: friend?.date,
-        time: friend?.time
+        time: friend?.time,
+        url:friend?.url_profile
      
 })}
 
@@ -149,7 +150,8 @@ app.get('/', async (req, res) => {
         signature: friend?.signature,
         voiceRoom: friend?.voiceRoom,
         date: friend?.date,
-        time: friend?.time
+        time: friend?.time,
+        url:friend?.url_profile
     })
 
 })
